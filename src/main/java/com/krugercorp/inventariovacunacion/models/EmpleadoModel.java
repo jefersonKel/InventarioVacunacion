@@ -85,6 +85,25 @@ public class EmpleadoModel implements Serializable {
     @Column(name = "DOSIS")
     private int numeroDosis;
 
+    public EmpleadoModel() {
+    }
+
+    public EmpleadoModel(Long id, String identificacion, String nombres, String apellidos, String correoElectronico, Date fechaNacimiento, String DireccionDomicilio, String telefono, boolean vacunado, TipoVacuna tipoVacuna, Date fechaVacunacion, int numeroDosis) {
+        this.id = id;
+        this.identificacion = identificacion;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.correoElectronico = correoElectronico;
+        this.fechaNacimiento = fechaNacimiento;
+        this.DireccionDomicilio = DireccionDomicilio;
+        this.telefono = telefono;
+        this.vacunado = vacunado;
+        this.tipoVacuna = tipoVacuna;
+        this.fechaVacunacion = fechaVacunacion;
+        this.numeroDosis = numeroDosis;
+    }
+
+    
     @JsonIgnore
     public String getNombresCompletos() {
         return apellidos + " " + nombres;
