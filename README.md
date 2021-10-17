@@ -1,4 +1,6 @@
-<!-- AMBIENTE DE TRABAJO -->
+## Introduccion
+API Rest desarrollada en Java usando Framework Spring boot. 
+
 ## Requisitos
 * [jdk-11.0.11](https://www.oracle.com/java/technologies/javase/jdk11-archive-downloads.html)
 * [postgresql-14.0-1](https://www.postgresql.org/download/)
