@@ -1,6 +1,6 @@
--- Database: postgres
---DROP DATABASE if exists "postgres";
-/*CREATE DATABASE "postgres"
+-- Database: NombreBaseDatos
+--DROP DATABASE if exists "NombreBaseDatos";
+/*CREATE DATABASE "NombreBaseDatos"
     WITH 
     OWNER = postgres
     ENCODING = 'UTF8'
