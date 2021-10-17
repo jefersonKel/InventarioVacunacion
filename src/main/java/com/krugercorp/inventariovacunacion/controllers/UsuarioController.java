@@ -10,6 +10,11 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * UsuarioController.java clase rest para API para usuarios del sistema
+ *
+ * @author jbalcazar
+ */
 @RestController
 @RequestMapping("/usuarios")
 public class UsuarioController {

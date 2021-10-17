@@ -31,7 +31,7 @@ import javax.validation.constraints.Size;
  * @author jbalcazar
  */
 @Entity
-@Table(name = "T_EMPLEADOS")
+@Table(name = "empleados")
 public class EmpleadoModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -72,7 +72,7 @@ public class EmpleadoModel implements Serializable {
     private String telefono;
 
     @Column(name = "ESTADO_VACUNACION")
-    private boolean vacunado;
+    private Integer vacunado;
 
     @Column(name = "TIPO_VACUNA", length = 50)
     @Enumerated(EnumType.STRING)
@@ -88,7 +88,8 @@ public class EmpleadoModel implements Serializable {
     public EmpleadoModel() {
     }
 
-    public EmpleadoModel(Long id, String identificacion, String nombres, String apellidos, String correoElectronico, Date fechaNacimiento, String DireccionDomicilio, String telefono, boolean vacunado, TipoVacuna tipoVacuna, Date fechaVacunacion, int numeroDosis) {
+    public EmpleadoModel(Long id, String identificacion, String nombres, String apellidos,
+            String correoElectronico, Date fechaNacimiento, String DireccionDomicilio, String telefono, Integer vacunado, TipoVacuna tipoVacuna, Date fechaVacunacion, int numeroDosis) {
         this.id = id;
         this.identificacion = identificacion;
         this.nombres = nombres;
@@ -103,7 +104,6 @@ public class EmpleadoModel implements Serializable {
         this.numeroDosis = numeroDosis;
     }
 
-    
     @JsonIgnore
     public String getNombresCompletos() {
         return apellidos + " " + nombres;
@@ -174,11 +174,15 @@ public class EmpleadoModel implements Serializable {
     }
 
     public boolean isVacunado() {
-        return vacunado;
+        return (vacunado == 1);
     }
 
-    public void setVacunado(boolean vacunado) {
+    public void setVacunado(Integer vacunado) {
         this.vacunado = vacunado;
+    }
+
+    public Integer getVacunado() {
+        return vacunado;
     }
 
     public TipoVacuna getTipoVacuna() {

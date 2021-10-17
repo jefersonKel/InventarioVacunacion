@@ -2,7 +2,6 @@ package com.krugercorp.inventariovacunacion.services;
 
 import com.krugercorp.inventariovacunacion.enumeration.TipoVacuna;
 import com.krugercorp.inventariovacunacion.excepcion.EmpleadoException;
-import com.krugercorp.inventariovacunacion.excepcion.UsuarioException;
 import com.krugercorp.inventariovacunacion.models.EmpleadoModel;
 import com.krugercorp.inventariovacunacion.models.UsuarioModel;
 import com.krugercorp.inventariovacunacion.repositories.EmpleadoRepository;
@@ -58,16 +57,17 @@ public class EmpleadoService {
      */
     public EmpleadoModel ActualizarInformacion(EmpleadoModel empleado) throws EmpleadoException {
         EmpleadoModel empleadoOld = empleadoRepository.findById(empleado.getId()).orElse(null);
+
         if (empleadoOld == null) {
             throw new EmpleadoException("Empleado no existe para actualización");
         }
         empleadoOld.setFechaNacimiento(empleado.getFechaNacimiento());
         empleadoOld.setDireccionDomicilio(empleado.getDireccionDomicilio());
         empleadoOld.setTelefono(empleado.getTelefono());
-        empleadoOld.setVacunado(empleado.isVacunado());
-        empleadoOld.setTipoVacuna(empleado.isVacunado() ? empleado.getTipoVacuna() : null);
-        empleadoOld.setFechaVacunacion(empleado.isVacunado() ? empleado.getFechaVacunacion() : null);
-        empleadoOld.setNumeroDosis(empleado.isVacunado() ? empleado.getNumeroDosis() : null);
+        empleadoOld.setVacunado(empleado.getVacunado());
+        empleadoOld.setTipoVacuna(empleado.getTipoVacuna());
+        empleadoOld.setFechaVacunacion(empleado.getFechaVacunacion());
+        empleadoOld.setNumeroDosis(empleado.getNumeroDosis());
         return empleadoRepository.save(empleadoOld);
     }
 
@@ -79,29 +79,25 @@ public class EmpleadoService {
      * false
      */
     public boolean eliminarEmpelado(Long id) {
-        try {
-            EmpleadoModel empleado = empleadoRepository.findById(id).orElse(null);
-            if (empleado != null) {
-                UsuarioModel usuario = usuarioRepository
-                        .findByIdentificacion(empleado.getIdentificacion()).orElse(null);
-                empleadoRepository.deleteById(id);
-                usuarioRepository.deleteById(usuario.getId());
+        EmpleadoModel empleado = empleadoRepository.findById(id).orElse(null);
+        if (empleado != null) {
+            UsuarioModel usuario = usuarioRepository
+                    .findByIdentificacion(empleado.getIdentificacion()).orElse(null);
+            empleadoRepository.deleteById(id);
+            usuarioRepository.deleteById(usuario.getId());
 
-            }
-            return true;
-        } catch (Exception err) {
-            return false;
         }
+        return true;
     }
 
-    /**
-     * Busca un empleados con el primary key id
-     *
-     * @param id primary key del empleado
-     * @return retorna empleado en el caso que lo encuentre, caso contrario
-     * retorna vacio
-     */
-    public Optional<EmpleadoModel> obtenerPorId(Long id) {
+/**
+ * Busca un empleados con el primary key id
+ *
+ * @param id primary key del empleado
+ * @return retorna empleado en el caso que lo encuentre, caso contrario retorna
+ * vacio
+ */
+public Optional<EmpleadoModel> obtenerPorId(Long id) {
         return empleadoRepository.findById(id);
     }
 
@@ -126,22 +122,36 @@ public class EmpleadoService {
 
     /**
      * Lista los empleados con los siguiente criterios de busqueda:
-     * <li>Filtrar por estado de vacunación.
-     * <li>Filtrar por tipo de vacuna.
      * <li>Filtrar por rango de fecha de vacunación.
      *
-     * @param vacunado estado de vacunacion
-     * @param tipoVacuna tipo de vacunacion
      * @param fechaDesde Fecha desde
      * @param fechaHasta Fecha hasta
      * @return lista de empleados
-     * @throws EmpleadoException uno de los criterios debe ser obligatorio
      */
-    public List<EmpleadoModel> listarPorCriterio(Boolean vacunado, TipoVacuna tipoVacuna, Date fechaDesde, Date fechaHasta) throws EmpleadoException {
-        if (vacunado == null && tipoVacuna == null && (fechaDesde == null || fechaHasta == null)) {
-            throw new EmpleadoException("Debe contener 1 criterio de busqueda.");
-        }
-        return empleadoRepository.findByCriterio(vacunado != null && vacunado == true ? 1 : 0, tipoVacuna, fechaDesde, fechaHasta);
+    public List<EmpleadoModel> listarPorFechaVacunacio(Date fechaDesde, Date fechaHasta) {
+
+        return empleadoRepository.findByFechaVacunacionBetween(fechaDesde, fechaHasta);
     }
 
+    /**
+     * Lista los empleados con los siguiente criterios de busqueda:
+     * <li>Filtrar por estado de vacunacion
+     *
+     * @param vacunado bandera 1 si esta vacunado / 0 no esta vacunado
+     * @return lista de empleados
+     */
+    public List<EmpleadoModel> listarPorVacunacion(Integer vacunado) {
+        return empleadoRepository.findByVacunado(vacunado);
+    }
+
+    /**
+     * Lista los empleados con los siguiente criterios de busqueda:
+     * <li>Filtrar por tipo de vacunacion
+     *
+     * @param tipoVacuna tipo de vacuna
+     * @return lista de empleados
+     */
+    public List<EmpleadoModel> listarPorTipoVacuna(TipoVacuna tipoVacuna) {
+        return empleadoRepository.findByTipoVacuna(tipoVacuna);
+    }
 }

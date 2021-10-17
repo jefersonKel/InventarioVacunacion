@@ -15,6 +15,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * EmpleadoController.java clase rest para API de empleados 
+ *
+ * @author jbalcazar
+ */
 @RestController
 @RequestMapping("/empleados")
 public class EmpleadoController {
@@ -63,12 +68,25 @@ public class EmpleadoController {
         return this.empleadoService.obtenerPorIdentificacion(identificacion);
     }
 
-    @Operation(summary = "Buscar empleados por criterios")
-    @GetMapping("/CriterioPor")
-    public List<EmpleadoModel> listarPorCriterio(
-            @RequestParam("vacunado") Boolean vacunado, @RequestParam("tipoVacuna") TipoVacuna tipoVacuna,
-            @RequestParam("fechaDesde") Date fechaDesde, @RequestParam("fechaHasta") Date fechaHasta) throws EmpleadoException {
-        return this.empleadoService.listarPorCriterio(vacunado, tipoVacuna, fechaDesde, fechaHasta);
+    @Operation(summary = "Buscar empleados vacunados o sin vacunar (1/0)")
+    @GetMapping("/listarPorVacunacion")
+    public List<EmpleadoModel> listarPorVacunacion(
+            @RequestParam(name = "vacunado") Integer vacunado) {
+        return this.empleadoService.listarPorVacunacion(vacunado);
     }
 
+    @Operation(summary = "Buscar empleados por tipo de vacunacion")
+    @GetMapping("/listarPorTipoVacuna")
+    public List<EmpleadoModel> listarPorTipoVacuna(
+            @RequestParam(name = "vacunado") TipoVacuna tipoVacuna) {
+        return this.empleadoService.listarPorTipoVacuna(tipoVacuna);
+    }
+
+    @Operation(summary = "Buscar empleados por fecha de vacunacion")
+    @GetMapping("/listarPorFechaVacunacio")
+    public List<EmpleadoModel> listarPorFechaVacunacio(
+            @RequestParam(name = "fechaDesde") Date fechaDesde,
+            @RequestParam(name = "fechaHasta") Date fechaHasta) {
+        return this.empleadoService.listarPorFechaVacunacio(fechaDesde, fechaHasta);
+    }
 }

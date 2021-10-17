@@ -7,12 +7,10 @@ package com.krugercorp.inventariovacunacion;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.krugercorp.inventariovacunacion.controllers.EmpleadoController;
-import com.krugercorp.inventariovacunacion.enumeration.TipoVacuna;
 import com.krugercorp.inventariovacunacion.models.EmpleadoModel;
 import com.krugercorp.inventariovacunacion.services.EmpleadoService;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -43,10 +41,10 @@ public class EmpleadoControllerTest {
 
     EmpleadoModel RECORD_1 = new EmpleadoModel(null,
             "1234567890", "Juan", "Perez", "JPerez@gmail.com",
-            null, null, null, false, null, null, 0);
+            null, null, null, 0, null, null, 0);
     EmpleadoModel RECORD_2 = new EmpleadoModel(1L,
             "1234567890", "Juan", "Perez", "JPerez@gmail.com",
-            null, null, null, false, null, null, 0);
+            null, null, null, 0, null, null, 0);
 
     @Test
     public void testListarTodos() throws Exception {
